@@ -1,0 +1,2 @@
+model,accuracy,f1_score
+RandomForest,0.9969313584372049,0.9967272311171154
