@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 import os
+import numpy as np
 
 
 def load_dataset(input_path):
@@ -18,6 +19,42 @@ def load_dataset(input_path):
     df = pd.read_csv(input_path)
     print(f"Original shape: {df.shape}")
     return df
+
+def reduce_dataset_by_merges(df, max_merges=100, random_state=42):
+    """
+    Reduce the dataset by selecting a subset of merge_ids (groups), ensuring that all samples belonging to the same merge_id are kept.
+    This is useful for debugging slow models like SRC.
+
+    Args:
+        df (pd.DataFrame): Original dataset
+        max_merges (int): Number of merge_id groups to keep
+        random_state (int): Random seed
+
+    Returns:
+        pd.DataFrame: Reduced dataset
+    """
+
+    print(f"\n[INFO] Reducing dataset to {max_merges} merge groups...")
+
+    # Get unique merge_ids
+    unique_merges = df["merge_id"].unique()
+
+    # Sample merge_ids
+    np.random.seed(random_state)
+    selected_merges = np.random.choice(
+        unique_merges,
+        size=min(max_merges, len(unique_merges)),
+        replace=False
+    )
+
+    # Filter dataset
+    df_reduced = df[df["merge_id"].isin(selected_merges)]
+
+    print(f"[INFO] Original samples: {len(df)}")
+    print(f"[INFO] Reduced samples: {len(df_reduced)}")
+    print(f"[INFO] Unique merges: {len(selected_merges)}")
+
+    return df_reduced
 
 
 def merge_labels(df):
