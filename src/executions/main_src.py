@@ -2,26 +2,25 @@ import os
 import pandas as pd
 from sklearn.model_selection import GroupKFold
 from sklearn.preprocessing import StandardScaler
-
 import warnings
 from sklearn.exceptions import ConvergenceWarning
-
-warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 from src.data.feature_builder import build_features
 from src.data.preprocess_dataset import load_dataset, reduce_dataset_by_merges
 from src.models.src import src_predict
 from src.metrics.evaluation import compute_accuracy, compute_f1
 
+# Ignore convergence warnings from Lasso
+warnings.filterwarnings("ignore", category=ConvergenceWarning)
 
 def main():
-    # Absolute paths (important to avoid path errors)
+    # Absolute paths (to avoid path errors)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     
     data_path = os.path.join(BASE_DIR, "data", "dataset_preprocessed.csv")
     results_path = os.path.join(BASE_DIR, "results", "src_results.csv")
 
-    print(f"Loading dataset from {data_path}...")
+    # Load dataset
     df = load_dataset(data_path)
     
     ##################################################################################################################################################3
@@ -32,7 +31,6 @@ def main():
     X, y, merge_ids, _ = build_features(df)
 
     gkf = GroupKFold(n_splits=5)
-
     accuracies = []
     f1_scores = []
 
