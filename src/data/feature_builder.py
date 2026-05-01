@@ -1,3 +1,4 @@
+# feature_builder.py
 import pandas as pd
 
 
@@ -7,7 +8,8 @@ COLS_TO_REMOVE = [
     'merge_id', 'merge_time',
     'file_report_id', 'file_path',
     'chunk_id', 'developersIntersection',
-    'conflictResolutionResult'
+    'conflictResolutionResult',
+    'label_encoded'
 ]
 
 
@@ -27,12 +29,12 @@ def build_features(df):
             - pd.Series: Project IDs (useful for project-level analysis)
     """
     
+    # Extract encoded labels
+    y = df["label_encoded"].values
+    
     # Remove non-feature columns and keep only numeric data
     X = df.drop(columns=COLS_TO_REMOVE, errors='ignore')
     X = X.select_dtypes(include=['number'])
-
-    # Extract encoded labels
-    y = df["label_encoded"].values
 
     # Grouping variable to prevent data leakage in cross-validation
     merge_ids = df["merge_id"]

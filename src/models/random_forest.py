@@ -1,31 +1,45 @@
+# random_forest.py
 from sklearn.ensemble import RandomForestClassifier
-
-def train_rf(X_train, y_train, n_estimators=400, random_state=42):
+ 
+ 
+# Hyperparameters from the paper (Section III-E)
+RF_HYPERPARAMS = {
+    "n_estimators": 400,
+    "random_state": 42,
+    "n_jobs": -1,
+}
+ 
+ 
+def train_rf(X_train, y_train, **kwargs):
     """
-    Trains a Random Forest.
-
+    Train a Random Forest classifier.
+ 
+    Uses the hyperparameters from Elias et al. by default, which are the same
+    ones adopted by the paper (Section III-E) to ensure comparability.
+ 
     Args:
-        X_train (pd.DataFrame or np.array): Training features.
-        y_train (np.array): Training labels.
-        n_estimators (int): Number of trees.
-        random_state (int): Seed for reproducibility.
-
+        X_train (pd.DataFrame or np.ndarray): Training features.
+        y_train (np.ndarray): Training labels.
+        **kwargs: Optional overrides for hyperparameters.
+ 
     Returns:
-        RandomForestClassifier: Trained model.
-    """    
-    model = RandomForestClassifier(n_estimators=n_estimators, random_state=random_state)
+        RandomForestClassifier: Fitted model.
+    """
+    params = {**RF_HYPERPARAMS, **kwargs}
+    model = RandomForestClassifier(**params)
     model.fit(X_train, y_train)
     return model
-
+ 
+ 
 def predict_rf(model, X_test):
     """
-    Makes predictions using the Random Forest model.
-
+    Generate predictions from a trained Random Forest model.
+ 
     Args:
         model (RandomForestClassifier): Trained model.
-        X_test (pd.DataFrame or np.array): Test features.
-
+        X_test (pd.DataFrame or np.ndarray): Test features.
+ 
     Returns:
-        np.array: Predictions.
+        np.ndarray: Predicted class labels.
     """
     return model.predict(X_test)

@@ -1,0 +1,3 @@
+strategy,accuracy,zeror,f1_weighted,precision_weighted,recall_weighted,normalized_improvement
+S1_random_splitting,0.92702,0.7438,0.92466,0.9243399999999999,0.92702,0.71508
+S3_merge_level_grouping,0.8228199999999999,0.7437400000000001,0.80418,0.81164,0.8228199999999999,0.30228
