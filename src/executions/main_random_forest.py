@@ -4,8 +4,8 @@ Replication of RQ1 from the paper:
     "A Dead End for Classical Machine Learning in Merge Conflict Resolution?"
  
 This script compares two data-partitioning strategies:
-    - S1: Random chunk-level splitting (WITH data leakage)  → expected accuracy ~0.83
-    - S3: Merge-level grouping      (WITHOUT data leakage)  → expected accuracy ~0.66
+    - S1: Random chunk-level splitting (WITH data leakage) --> expected accuracy ~0.83
+    - S3: Merge-level grouping (WITHOUT data leakage) --> expected accuracy ~0.66
  
 Both use 5-fold cross-validation and a Random Forest classifier with
 the hyperparameters from Elias et al. [3] (n_estimators=400).
@@ -61,8 +61,8 @@ def run_s1_random_splitting(X, y, label_encoder=None):
         X_train, X_test = X.iloc[train_idx], X.iloc[test_idx]
         y_train, y_test = y[train_idx], y[test_idx]
  
-        model   = train_rf(X_train, y_train)
-        y_pred  = predict_rf(model, X_test)
+        model = train_rf(X_train, y_train)
+        y_pred = predict_rf(model, X_test)
         metrics = compute_all_metrics(y_test, y_pred, y_train)
         fold_metrics.append(metrics)
  
@@ -123,16 +123,16 @@ def run_s3_merge_level_grouping(X, y, merge_ids, label_encoder=None):
  
     fold_metrics = []
     for fold in range(N_SPLITS):
-        test_mask  = fold_labels == fold
+        test_mask = fold_labels == fold
         train_mask = ~test_mask
  
         X_train = X[train_mask]
-        X_test  = X[test_mask]
+        X_test = X[test_mask]
         y_train = y[train_mask]
-        y_test  = y[test_mask]
+        y_test = y[test_mask]
  
-        model   = train_rf(X_train, y_train)
-        y_pred  = predict_rf(model, X_test)
+        model = train_rf(X_train, y_train)
+        y_pred = predict_rf(model, X_test)
         metrics = compute_all_metrics(y_test, y_pred, y_train)
         fold_metrics.append(metrics)
  
@@ -183,11 +183,11 @@ def run_per_project(X, y, merge_ids, project_names, strategy="S3"):
     for proj in sorted(project_names.unique()):
         mask = (project_names == proj).values
  
-        X_proj    = X[mask]
-        y_proj    = y[mask]
-        mid_proj  = merge_ids[mask]
-        n_chunks  = mask.sum()
-        n_merges  = mid_proj.nunique()
+        X_proj = X[mask]
+        y_proj = y[mask]
+        mid_proj = merge_ids[mask]
+        n_chunks = mask.sum()
+        n_merges = mid_proj.nunique()
  
         if n_merges < N_SPLITS:
             print(f"  {proj:<35} — skipped (only {n_merges} merges, need {N_SPLITS})")
@@ -199,8 +199,8 @@ def run_per_project(X, y, merge_ids, project_names, strategy="S3"):
             splits = list(skf.split(X_proj, y_proj))
         else:
             # Merge-level grouping per project
-            unique_merges   = mid_proj.unique()
-            rng             = np.random.default_rng(seed=42)
+            unique_merges = mid_proj.unique()
+            rng = np.random.default_rng(seed=42)
             shuffled_merges = rng.permutation(unique_merges)
             fold_assignment = {mid: i % N_SPLITS for i, mid in enumerate(shuffled_merges)}
             fold_labels_proj = mid_proj.map(fold_assignment).values
@@ -208,7 +208,7 @@ def run_per_project(X, y, merge_ids, project_names, strategy="S3"):
             splits = []
             X_proj_reset = X_proj.reset_index(drop=True)
             for fold in range(N_SPLITS):
-                test_idx  = np.where(fold_labels_proj == fold)[0]
+                test_idx = np.where(fold_labels_proj == fold)[0]
                 train_idx = np.where(fold_labels_proj != fold)[0]
                 splits.append((train_idx, test_idx))
  
@@ -234,16 +234,16 @@ def run_per_project(X, y, merge_ids, project_names, strategy="S3"):
  
         m = _mean_metrics(fold_metrics, prefix="")
         row = {
-            "project":    proj,
-            "merges":     n_merges,
-            "chunks":     n_chunks,
-            "accuracy":   m["accuracy"],
-            "zeror":      m["zeror"],
-            "f1":         m["f1_weighted"],
-            "precision":  m["precision_weighted"],
-            "recall":     m["recall_weighted"],
-            "NI":         m["normalized_improvement"],
-            "strategy":   strategy,
+            "project": proj,
+            "merges": n_merges,
+            "chunks": n_chunks,
+            "accuracy": m["accuracy"],
+            "zeror": m["zeror"],
+            "f1": m["f1_weighted"],
+            "precision": m["precision_weighted"],
+            "recall": m["recall_weighted"],
+            "NI": m["normalized_improvement"],
+            "strategy": strategy,
         }
         rows.append(row)
         print(f"  {proj:<35} {n_merges:>7} {n_chunks:>7} "
@@ -273,8 +273,8 @@ def _mean_metrics(fold_metrics_list, prefix=""):
  
 def main():
     # Paths
-    data_path    = os.path.join(BASE_DIR, "data", "dataset_preprocessed.csv")
-    results_dir  = os.path.join(BASE_DIR, "results")
+    data_path = os.path.join(BASE_DIR, "data", "dataset_preprocessed.csv")
+    results_dir = os.path.join(BASE_DIR, "results")
     os.makedirs(results_dir, exist_ok=True)
  
     # Load data

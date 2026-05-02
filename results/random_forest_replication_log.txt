@@ -1,0 +1,143 @@
+Loading dataset from /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/data/dataset_preprocessed.csv...
+Original shape: (140127, 54)
+
+Dataset loaded:
+  Samples:        140127
+  Features:       43
+  Projects:       16
+  Merge commits:  9698
+  Classes (6):    ['CHUNK_CANONICAL_BASE', 'CHUNK_CANONICAL_OURS', 'CHUNK_CANONICAL_THEIRS', 'CHUNK_NONCANONICAL', 'CHUNK_SEMICANONICAL_OTHERS', 'CHUNK_SEMICANONICAL_OURSTHEIRS']
+
+======================================================================
+S1: Random Chunk-Level Splitting (WITH data leakage)
+    Expected accuracy: ~0.83  (paper Table II, left side)
+======================================================================
+  Fold 1: acc=0.9251  zeror=0.7438  f1=0.9227  NI=0.7076
+  Fold 2: acc=0.9281  zeror=0.7438  f1=0.9256  NI=0.7192
+  Fold 3: acc=0.9282  zeror=0.7438  f1=0.9260  NI=0.7196
+  Fold 4: acc=0.9280  zeror=0.7438  f1=0.9259  NI=0.7189
+  Fold 5: acc=0.9257  zeror=0.7438  f1=0.9231  NI=0.7099
+
+  MEAN across 5 folds:
+    Accuracy:               0.9270
+    ZeroR:                  0.7438
+    Weighted F1:            0.9247
+    Weighted Precision:     0.9243
+    Weighted Recall:        0.9270
+    Normalized Improvement: 0.7150
+
+  Classification Report (fold 5):
+                                precision    recall  f1-score   support
+
+          CHUNK_CANONICAL_BASE       0.87      0.69      0.77       239
+          CHUNK_CANONICAL_OURS       0.95      0.98      0.96     20846
+        CHUNK_CANONICAL_THEIRS       0.88      0.84      0.86      2732
+            CHUNK_NONCANONICAL       0.82      0.79      0.80      3763
+    CHUNK_SEMICANONICAL_OTHERS       0.72      0.35      0.47       179
+CHUNK_SEMICANONICAL_OURSTHEIRS       0.76      0.42      0.55       266
+
+                      accuracy                           0.93     28025
+                     macro avg       0.83      0.68      0.73     28025
+                  weighted avg       0.92      0.93      0.92     28025
+
+
+======================================================================
+S3: Merge-Level Grouping (WITHOUT data leakage)
+    Expected accuracy: ~0.66  (paper Table II, right side)
+======================================================================
+  Fold 1: acc=0.8454  zeror=0.7261  f1=0.8351  NI=0.4355
+  Fold 2: acc=0.7899  zeror=0.7485  f1=0.7584  NI=0.1647
+  Fold 3: acc=0.8518  zeror=0.7397  f1=0.8382  NI=0.4305
+  Fold 4: acc=0.8525  zeror=0.7429  f1=0.8412  NI=0.4262
+  Fold 5: acc=0.7745  zeror=0.7615  f1=0.7480  NI=0.0545
+
+  MEAN across 5 folds:
+    Accuracy:               0.8228
+    ZeroR:                  0.7437
+    Weighted F1:            0.8042
+    Weighted Precision:     0.8116
+    Weighted Recall:        0.8228
+    Normalized Improvement: 0.3023
+
+  Classification Report (fold 5):
+                                precision    recall  f1-score   support
+
+          CHUNK_CANONICAL_BASE       1.00      0.17      0.29       317
+          CHUNK_CANONICAL_OURS       0.80      0.95      0.87     22422
+        CHUNK_CANONICAL_THEIRS       0.77      0.48      0.59      5452
+            CHUNK_NONCANONICAL       0.51      0.31      0.38      4040
+    CHUNK_SEMICANONICAL_OTHERS       0.66      0.09      0.16       231
+CHUNK_SEMICANONICAL_OURSTHEIRS       0.84      0.28      0.42       235
+
+                      accuracy                           0.77     32697
+                     macro avg       0.76      0.38      0.45     32697
+                  weighted avg       0.76      0.77      0.75     32697
+
+
+======================================================================
+Per-Project Results — S1
+======================================================================
+  Project                              Merges  Chunks    Acc  ZeroR     F1     NI
+  ----------------------------------- ------- ------- ------ ------ ------ ------
+  CCI-MIT/XCoLab                          333    9323   0.95   0.59   0.95   0.88
+  CloudStack-extras/CloudStack-archive     128    1223   0.78   0.38   0.78   0.65
+  TeamDev-Archive/OpenFaces               176    3914   0.94   0.85   0.93   0.57
+  TelluIoT/ThingML                         52    1130   0.92   0.83   0.92   0.54
+  Unidata/thredds                         130    1391   0.77   0.51   0.75   0.53
+  alkacon/opencms-core                     43    1726   0.90   0.83   0.89   0.41
+  aosp-mirror/platform_frameworks_base    4500   84514   0.97   0.84   0.97   0.84
+  apache/accumulo                        1788   14848   0.86   0.65   0.86   0.60
+  apache/lucene-solr                      285    2326   0.69   0.36   0.68   0.52
+  eucalyptus/eucalyptus                   577    3153   0.72   0.52   0.71   0.42
+  getrailo/railo                          156    1001   0.74   0.58   0.73   0.38
+  hibernate/hibernate-orm                 145    2707   0.77   0.54   0.76   0.50
+  hyphanet/fred                           260    1425   0.68   0.50   0.67   0.36
+  jgralab/jgralab                          99    2537   0.92   0.67   0.91   0.75
+  wro4j/wro4j                             351    2215   0.72   0.47   0.71   0.47
+  zkoss/zk                                675    6694   0.91   0.72   0.91   0.68
+
+  MEAN                                                  0.83   0.61   0.82   0.57
+
+======================================================================
+Per-Project Results — S3
+======================================================================
+  Project                              Merges  Chunks    Acc  ZeroR     F1     NI
+  ----------------------------------- ------- ------- ------ ------ ------ ------
+  CCI-MIT/XCoLab                          333    9323   0.53   0.59   0.50  -0.38
+  CloudStack-extras/CloudStack-archive     128    1223   0.71   0.37   0.71   0.54
+  TeamDev-Archive/OpenFaces               176    3914   0.76   0.85   0.74  -0.72
+  TelluIoT/ThingML                         52    1130   0.42   0.77   0.42  -2.02
+  Unidata/thredds                         130    1391   0.57   0.51   0.52   0.10
+  alkacon/opencms-core                     43    1726   0.74   0.82   0.72  -0.63
+  aosp-mirror/platform_frameworks_base    4500   84514   0.91   0.84   0.91   0.46
+  apache/accumulo                        1788   14848   0.71   0.65   0.67   0.14
+  apache/lucene-solr                      285    2326   0.49   0.36   0.48   0.20
+  eucalyptus/eucalyptus                   577    3153   0.51   0.51   0.45  -0.04
+  getrailo/railo                          156    1001   0.48   0.58   0.47  -0.22
+  hibernate/hibernate-orm                 145    2707   0.64   0.54   0.60   0.17
+  hyphanet/fred                           260    1425   0.52   0.50   0.47   0.02
+  jgralab/jgralab                          99    2537   0.78   0.66   0.77   0.23
+  wro4j/wro4j                             351    2215   0.64   0.47   0.62   0.32
+  zkoss/zk                                675    6694   0.81   0.72   0.78   0.32
+
+  MEAN                                                  0.64   0.61   0.61  -0.09
+
+======================================================================
+SUMMARY — RQ1 Replication
+======================================================================
+  Metric                           S1 (leakage)  S3 (no leakage)
+  ------------------------------ -------------- ----------------
+  accuracy                               0.9270           0.8228
+  zeror                                  0.7438           0.7437
+  f1_weighted                            0.9247           0.8042
+  precision_weighted                     0.9243           0.8116
+  recall_weighted                        0.9270           0.8228
+  normalized_improvement                 0.7150           0.3023
+
+  Paper reference:
+    S1 accuracy: ~0.83  |  S3 accuracy: ~0.66
+    Delta: 0.1042  (paper reports ~0.168)
+
+  Summary saved → /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/results/rf_rq1_summary.csv
+  Per-project S1 → /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/results/rf_rq1_per_project_S1.csv
+  Per-project S3 → /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/results/rf_rq1_per_project_S3.csv
