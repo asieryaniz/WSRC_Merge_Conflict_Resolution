@@ -41,15 +41,15 @@ RANDOM_STATE = 42
 
 # Projects used for search (small / medium / large — no aosp)
 SEARCH_PROJECTS = [
-    "getrailo/railo", # small  ~1k
-    "apache/accumulo", # medium ~15k
-    "zkoss/zk", # large  ~7k
+    "getrailo/railo", # small  ~1k 
+    "apache/accumulo", # medium ~15k 
+    "zkoss/zk", # large  ~7k 
 ]
 
 # Hyperparameter grid
 ALPHAS = [0.001, 0.01, 0.05, 0.1]
-DICT_SIZES = [100, 200, 500] # max samples per class
-WEIGHT_METHODS = ["similarity", "class", "uniform"]
+DICT_SIZES = [100, 200, 500, 1000, 2000] # max samples per class  
+WEIGHT_METHODS = ["similarity", "class", "uniform"] 
 
 
 # Helpers (same as main_wsrc.py)
