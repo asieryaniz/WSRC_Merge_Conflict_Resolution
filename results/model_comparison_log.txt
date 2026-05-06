@@ -1,54 +1,74 @@
 Loading dataset from /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/data/dataset_preprocessed.csv...
 Original shape: (140127, 54)
 
-Final Comparison: SRC vs. WSRC vs. Random Forest
+Final Comparison: RF vs. SRC vs. WSRC vs. KNN
 Evaluation: S3 — merge-level grouping, no data leakage, 5-fold CV
+Config (all 16 projects): alpha=0.01, dict/cls=500, weight=class
+KNN: metric=euclidean, weights=distance, k in [1, 3, 5, 7, 11, 15, 21] (selected per project on fold-0)
 
-Standard config (15 projects):  alpha=0.01, dict/cls=500, weight=class
-Adaptive config (aosp-mirror):  alpha=0.05, dict/cls=200, weight=class
-  Rationale: standard config ~195 min → adaptive config ~18 min (~7pts accuracy cost)
+  Project                                    RF    SRC   WSRC    KNN   Best    k
+  ──────────────────────────────────────────────────────────────────────────────
+  CCI-MIT/XCoLab                         0.5320 0.3280 0.3576 0.3632     RF  k=21  [967s]
+  CloudStack-extras/CloudStack-archive   0.7133 0.5632 0.3984 0.6470     RF  k=5  [65s]
+  TeamDev-Archive/OpenFaces              0.7633 0.4193 0.6003 0.7119     RF  k=21  [318s]
+  TelluIoT/ThingML                       0.4211 0.2179 0.1705 0.4496    KNN  k=3  [33s]
+  Unidata/thredds                        0.5702 0.4727 0.5296 0.5864    KNN  k=11  [112s]
+  alkacon/opencms-core                   0.7429 0.5248 0.5472 0.8148    KNN  k=21  [111s]
+  aosp-mirror/platform_frameworks_base   0.9128 0.7165 0.5036 0.8624     RF  k=21  [10303s]
+  apache/accumulo                        0.7111 0.5539 0.6593 0.6610     RF  k=21  [1486s]
+  apache/lucene-solr                     0.4937 0.3798 0.3325 0.4504     RF  k=21  [217s]
+  eucalyptus/eucalyptus                  0.5079 0.4447 0.4629 0.4753     RF  k=15  [308s]
+  getrailo/railo                         0.4808 0.5092 0.5427 0.4053   WSRC  k=1  [45s]
+  hibernate/hibernate-orm                0.6384 0.5423 0.5834 0.5617     RF  k=11  [257s]
+  hyphanet/fred                          0.5171 0.4319 0.4826 0.4207     RF  k=21  [85s]
+  jgralab/jgralab                        0.7817 0.5635 0.5009 0.6993     RF  k=11  [203s]
+  wro4j/wro4j                            0.6405 0.4549 0.4923 0.5674     RF  k=7  [145s]
+  zkoss/zk                               0.8135 0.5514 0.7219 0.7049     RF  k=7  [581s]
 
-  Project                                 RF Acc  SRC Acc  WSRC Acc  RF F1  SRC F1  WSRC F1   Best
-  ------------------------------------------------------------------------------------------------
-  CCI-MIT/XCoLab                          0.5320   0.3703    0.3576 0.4995  0.3709   0.3651     RF  [692s]
-  CloudStack-extras/CloudStack-archive    0.7133   0.5470    0.3984 0.7122  0.5447   0.3215     RF  [50s]
-  TeamDev-Archive/OpenFaces               0.7633   0.4167    0.6003 0.7367  0.4432   0.6064     RF  [226s]
-  TelluIoT/ThingML                        0.4211   0.2258    0.1705 0.4160  0.2252   0.1851     RF  [25s]
-  Unidata/thredds                         0.5702   0.4771    0.5296 0.5153  0.4558   0.3858     RF  [86s]
-  alkacon/opencms-core                    0.7429   0.5355    0.5472 0.7250  0.5595   0.5424     RF  [80s]
-  aosp-mirror/platform_frameworks_base    0.9128   0.6036    0.4632 0.9109  0.6775   0.5740     RF  [1958s] [adaptive cfg]
-  apache/accumulo                         0.7111   0.5648    0.6593 0.6696  0.5866   0.5422     RF  [1179s]
-  apache/lucene-solr                      0.4937   0.3825    0.3325 0.4839  0.3744   0.2095     RF  [171s]
-  eucalyptus/eucalyptus                   0.5079   0.4427    0.4629 0.4479  0.4314   0.3283     RF  [242s]
-  getrailo/railo                          0.4808   0.5145    0.5427 0.4689  0.4807   0.3944   WSRC  [36s]
-  hibernate/hibernate-orm                 0.6384   0.5457    0.5834 0.6018  0.5114   0.4464     RF  [211s]
-  hyphanet/fred                           0.5171   0.4323    0.4826 0.4739  0.4189   0.3374     RF  [69s]
-  jgralab/jgralab                         0.7817   0.5070    0.5009 0.7702  0.5224   0.4400     RF  [155s]
-  wro4j/wro4j                             0.6405   0.4591    0.4923 0.6244  0.4619   0.3617     RF  [115s]
-  zkoss/zk                                0.8135   0.5496    0.7219 0.7792  0.5938   0.6356     RF  [474s]
-
-========================================================================
+====================================================================
 SUMMARY — Mean across all 16 projects
-========================================================================
+====================================================================
   Model    Mean Acc   Mean F1   Mean NI    Wins
-  ------  ---------  --------  --------  ------
-  RF         0.6400    0.6147   -0.0939    15/16
-  SRC        0.4734    0.4786   -0.7456     0/16
-  WSRC       0.4903    0.4172   -0.7006     1/16
+  ──────  ─────────  ────────  ────────  ──────
+  RF         0.6400    0.6147   -0.0939    12/16
+  SRC        0.4796    0.4842   -0.7064     0/16
+  WSRC       0.4929    0.4196   -0.6843     1/16
+  KNN        0.5863    0.5742   -0.2716     3/16
 
   ZeroR mean: 0.6091
 
-  Pairwise accuracy deltas (mean over 16 projects):
-    RF − SRC:   +0.1666
-    RF − WSRC:  +0.1497
-    WSRC − SRC: +0.0169  (WSRC > SRC)
+  Accuracy delta vs RF (mean over 16 projects):
+    RF − SRC : +0.1604
+    RF − WSRC: +0.1472
+    RF − KNN : +0.0537
 
-  Win breakdown (16 projects):
-    RF: 15/16  ['CCI-MIT/XCoLab', 'CloudStack-extras/CloudStack-archive', 'TeamDev-Archive/OpenFaces', 'TelluIoT/ThingML', 'Unidata/thredds', 'alkacon/opencms-core', 'aosp-mirror/platform_frameworks_base', 'apache/accumulo', 'apache/lucene-solr', 'eucalyptus/eucalyptus', 'hibernate/hibernate-orm', 'hyphanet/fred', 'jgralab/jgralab', 'wro4j/wro4j', 'zkoss/zk']
+  WSRC vs KNN (key comparison):
+    WSRC mean acc: 0.4929  |  KNN mean acc: 0.5863  |  delta: -0.0935
+    WSRC > KNN in 4/16 projects
+
+  KNN best k per project:
+    XCoLab                              k=21
+    CloudStack-archive                  k=5
+    OpenFaces                           k=21
+    ThingML                             k=3
+    thredds                             k=11
+    opencms-core                        k=21
+    platform_frameworks_base            k=21
+    accumulo                            k=21
+    lucene-solr                         k=21
+    eucalyptus                          k=15
+    railo                               k=1
+    hibernate-orm                       k=11
+    fred                                k=21
+    jgralab                             k=11
+    wro4j                               k=7
+    zk                                  k=7
+
+  Win breakdown:
+    RF: 12/16  ['XCoLab', 'CloudStack-archive', 'OpenFaces', 'platform_frameworks_base', 'accumulo', 'lucene-solr', 'eucalyptus', 'hibernate-orm', 'fred', 'jgralab', 'wro4j', 'zk']
     SRC: 0/16  []
-    WSRC: 1/16  ['getrailo/railo']
+    WSRC: 1/16  ['railo']
+    KNN: 3/16  ['ThingML', 'thredds', 'opencms-core']
 
-  Note: aosp-mirror used adaptive config (alpha=0.05, dict/cls=200). All other projects: alpha=0.01, dict/cls=500.
-
-  Total time: 96.1 min
+  Total time: 253.9 min
   Results saved → /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/results/final_comparison.csv
