@@ -53,7 +53,6 @@ plt.rcParams.update({
     "grid.alpha": 0.3,
     "grid.linestyle": "--",
     "figure.dpi": 150,
-    "savefig.bbox_inches": "tight",
     "savefig.dpi": 150,
 })
 

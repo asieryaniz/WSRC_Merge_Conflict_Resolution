@@ -42,8 +42,8 @@ RANDOM_STATE = 42
 # Projects used for search (small / medium / large — no aosp)
 SEARCH_PROJECTS = [
     "getrailo/railo", # small  ~1k 
-    "apache/accumulo", # medium ~15k 
-    "zkoss/zk", # large  ~7k 
+    "apache/accumulo", # large ~15k 
+    "zkoss/zk", # medium  ~7k 
 ]
 
 # Hyperparameter grid
@@ -128,7 +128,7 @@ def main():
     # Total combinations
     grid = list(itertools.product(ALPHAS, DICT_SIZES, WEIGHT_METHODS))
     total = len(grid) * len(SEARCH_PROJECTS)
-    print(f"\nHyperparameter search: {len(grid)} configs × {len(SEARCH_PROJECTS)} projects = {total} runs\n")
+    print(f"\nHyperparameter search: {len(grid)} configs x {len(SEARCH_PROJECTS)} projects = {total} runs\n")
 
     all_rows = []
     run = 0
