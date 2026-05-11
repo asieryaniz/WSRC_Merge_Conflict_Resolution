@@ -1,0 +1,86 @@
+==========================================================
+Dataset: Wine
+  178 samples | 13 features | 3 classes | ZeroR=0.399
+==========================================================
+
+  ────────────────────────────────────────────────────
+  Full 5-fold CV — Wine
+  ────────────────────────────────────────────────────
+  Best WSRC config (pre-search on fold 0): alpha=0.005, weight=similarity
+  Model       Acc   vs ZeroR  Bar
+  ──────  ───────  ─────────
+  RF       0.9830    +0.5841  █████████████████████████████
+  KNN      0.9717    +0.5729  █████████████████████████████
+  SRC      0.8597    +0.4608  █████████████████████████
+  WSRC     0.9549    +0.5560  ████████████████████████████
+  ZeroR    0.3989
+
+  KNN best k: 5  |  WSRC best: alpha=0.005, weight=similarity
+  [CV time: 3.2s]
+
+  ────────────────────────────────────────────────────
+  Learning Curve — Wine
+  (test set fixed at 20%, training size varies)
+  ────────────────────────────────────────────────────
+   train%   n_tr       RF      KNN      SRC     WSRC  WSRC best?
+  ───────  ─────  ───────  ───────  ───────  ───────  ──────────
+      10%     14   0.9167   0.8889   0.4444   0.6667            
+      20%     28   0.9167   0.9167   0.6667   0.7222            
+      30%     42   0.9722   0.9722   0.8611   0.8611            
+      50%     71   0.9722   0.9722   0.8889   0.9167            
+      70%     99   0.9722   1.0000   0.9444   0.9167            
+     100%    142   1.0000   0.9722   0.9167   0.9722            
+  [Learning curve time: 3.0s]
+
+==========================================================
+Dataset: Digits
+  1797 samples | 64 features | 10 classes | ZeroR=0.102
+  WSRC/SRC dict: max 200 samples/class
+==========================================================
+
+  ────────────────────────────────────────────────────
+  Full 5-fold CV — Digits
+  ────────────────────────────────────────────────────
+  Best WSRC config (pre-search on fold 0): alpha=0.1, weight=similarity
+  Model       Acc   vs ZeroR  Bar
+  ──────  ───────  ─────────
+  RF       0.9800    +0.8781  █████████████████████████████
+  KNN      0.9805    +0.8787  █████████████████████████████
+  SRC      0.9750    +0.8731  █████████████████████████████
+  WSRC     0.9761    +0.8742  █████████████████████████████
+  ZeroR    0.1018
+
+  KNN best k: 5  |  WSRC best: alpha=0.1, weight=similarity
+  [CV time: 38.0s]
+
+  ────────────────────────────────────────────────────
+  Learning Curve — Digits
+  (test set fixed at 20%, training size varies)
+  ────────────────────────────────────────────────────
+   train%   n_tr       RF      KNN      SRC     WSRC  WSRC best?
+  ───────  ─────  ───────  ───────  ───────  ───────  ──────────
+      10%    143   0.9222   0.9028   0.8694   0.8806            
+      20%    287   0.9167   0.9000   0.9111   0.9167      ✓ WSRC
+      30%    431   0.9278   0.9056   0.9333   0.9417      ✓ WSRC
+      50%    718   0.9472   0.9500   0.9528   0.9556      ✓ WSRC
+      70%   1005   0.9639   0.9667   0.9611   0.9722      ✓ WSRC
+     100%   1437   0.9694   0.9667   0.9667   0.9722      ✓ WSRC
+  [Learning curve time: 9.6s]
+
+==========================================================
+FINAL SUMMARY — Full CV Accuracy
+==========================================================
+dataset   Digits     Wine
+model                    
+KNN      0.98052  0.97174
+RF       0.97996  0.98302
+SRC      0.97496  0.85966
+WSRC     0.97606  0.95492
+
+  Key question: does WSRC outperform RF or KNN on any dataset?
+  Wine    : winner=RF  WSRC=0.9549  RF=0.9830  KNN=0.9717  WSRC>RF: no  WSRC>KNN: no
+  Digits  : winner=KNN  WSRC=0.9761  RF=0.9800  KNN=0.9805  WSRC>RF: no  WSRC>KNN: no
+
+  Results saved:
+    CV results    → /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/results/benchmark_cv_results.csv
+    Learning curve → /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/results/benchmark_learning_curve.csv
