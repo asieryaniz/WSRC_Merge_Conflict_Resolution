@@ -1,0 +1,58 @@
+Error Analysis — collecting predictions across all projects
+Config: alpha=0.01, dict/cls=500, weight=class, KNN k=11
+
+Loading dataset from /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/data/dataset_preprocessed.csv...
+Original shape: (140127, 54)
+  Processing CCI-MIT/XCoLab (9,323 chunks)... done
+  Processing CloudStack-extras/CloudStack-archive (1,223 chunks)... done
+  Processing TeamDev-Archive/OpenFaces (3,914 chunks)... done
+  Processing TelluIoT/ThingML (1,130 chunks)... done
+  Processing Unidata/thredds (1,391 chunks)... done
+  Processing alkacon/opencms-core (1,726 chunks)... done
+  Processing aosp-mirror/platform_frameworks_base (84,514 chunks)... done
+  Processing apache/accumulo (14,848 chunks)... done
+  Processing apache/lucene-solr (2,326 chunks)... done
+  Processing eucalyptus/eucalyptus (3,153 chunks)... done
+  Processing getrailo/railo (1,001 chunks)... done
+  Processing hibernate/hibernate-orm (2,707 chunks)... done
+  Processing hyphanet/fred (1,425 chunks)... done
+  Processing jgralab/jgralab (2,537 chunks)... done
+  Processing wro4j/wro4j (2,215 chunks)... done
+  Processing zkoss/zk (6,694 chunks)... done
+
+  Total predictions collected: 140,127
+  Classes: ['CHUNK_CANONICAL_BASE', 'CHUNK_CANONICAL_OURS', 'CHUNK_CANONICAL_THEIRS', 'CHUNK_NONCANONICAL', 'CHUNK_SEMICANONICAL_OTHERS', 'CHUNK_SEMICANONICAL_OURSTHEIRS']
+
+[1/4] Confusion matrices...
+  Saved: 1_confusion_matrices_all_models.pdf
+
+[2/4] Per-class F1 by model...
+  Saved: 2_per_class_f1_by_model.pdf
+
+[3/4] Error overlap RF vs WSRC...
+  Saved: 3_error_overlap_rf_vs_wsrc.pdf
+
+  Error overlap summary (RF vs WSRC):
+    Both correct:     69,951 (49.9%)
+    Only RF correct:  44,247 (31.6%)
+    Only WSRC correct: 4,159 (3.0%)
+    Both wrong:       21,770 (15.5%)
+
+[4/4] Per-project class recall heatmap (RF)...
+  Saved: 4_per_project_class_recall_rf.pdf
+
+[5/5] Saving classification reports...
+  Saved: per_class_metrics_all_models.csv
+
+  Per-class F1 summary:
+model                               RF     KNN     SRC    WSRC
+class                                                         
+CHUNK_CANONICAL_BASE            0.5172  0.4241  0.1773  0.0435
+CHUNK_CANONICAL_OURS            0.8966  0.8622  0.7808  0.7080
+CHUNK_CANONICAL_THEIRS          0.5938  0.5163  0.3633  0.2375
+CHUNK_NONCANONICAL              0.5120  0.3251  0.3376  0.1674
+CHUNK_SEMICANONICAL_OTHERS      0.2023  0.1258  0.0582  0.0176
+CHUNK_SEMICANONICAL_OURSTHEIRS  0.4501  0.3498  0.1662  0.0870
+
+  Plots → /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/plots/error_analysis
+  Tables → /home/asieryaniz/Escritorio/Software_engineering/Project/WSRC_Merge_Conflict_Resolution/results/error_analysis
