@@ -1,0 +1,105 @@
+Hypothesis Testing — Statistical Validation of All Experiments
+α = 0.05  |  Bonferroni-corrected α = 0.0083  (6 pairwise comparisons)
+
+Loaded 16 projects from final_comparison.csv
+
+==============================================================
+SECTION 1 — Friedman Test
+H0: no difference in accuracy among RF, KNN, SRC, WSRC
+==============================================================
+
+  χ²(3) = 26.4750,  p < 0.001  ***
+  n = 16 projects
+  → REJECT H0: significant differences exist among models.
+    Post-hoc pairwise tests are warranted (see Section 2).
+
+==============================================================
+SECTION 2 — Wilcoxon Signed-Rank Post-Hoc Tests
+Bonferroni correction: α_adj = 0.05 / 6 = 0.0083
+H0 for each pair: no difference in accuracy (two-sided)
+==============================================================
+
+  Comparison           W stat    p-value   Adj. sig   Mean Δ  A wins
+  ────────────────── ──────── ────────── ────────── ──────── ───────
+  RF vs SRC               1.0     0.0001        ***  +0.1604   15/16
+  RF vs WSRC              6.0     0.0004        ***  +0.1472   15/16
+  RF vs KNN              12.0     0.0021         **  +0.0537   13/16
+  SRC vs WSRC            55.0     0.5282         ns  -0.0132    5/16
+  SRC vs KNN              8.0     0.0008        ***  -0.1067    2/16
+  WSRC vs KNN            27.0     0.0335         ns  -0.0935    4/16
+
+  Key findings:
+    Significant pairs:     ['RF vs SRC', 'RF vs WSRC', 'RF vs KNN', 'SRC vs KNN']
+    Non-significant pairs: ['SRC vs WSRC', 'WSRC vs KNN']
+
+    WSRC vs SRC: significant → the weighting mechanism adds no statistically proven benefit over SRC.
+
+==============================================================
+SECTION 3 — Spearman Correlation
+H0: no correlation between ZeroR and RF−WSRC accuracy gap
+==============================================================
+
+  Spearman ρ = 0.3765,  p = 0.1506  ns
+  n = 16 projects
+  → FAIL TO REJECT H0: no significant correlation.
+    The RF−WSRC gap cannot be explained by class imbalance alone.
+    This supports the structural interpretation: WSRC fails because
+    merge-conflict features do not satisfy the subspace assumption,
+    not primarily because of the class distribution.
+
+  Reference — ZeroR vs RF−KNN gap: ρ=-0.1059, p=0.6963
+
+==============================================================
+SECTION 4 — Wilcoxon on Digits Learning Curve
+H0: no difference between WSRC and RF/KNN on Digits dataset
+==============================================================
+
+  n = 6 learning curve points (training fractions)
+  Fractions: [0.1, 0.2, 0.3, 0.5, 0.7, 1.0]
+
+  WSRC vs RF on Digits:
+    W = 5.0,  p = 0.6250  ns
+    Mean Δ (WSRC − RF) = -0.0014
+    WSRC > RF in 4/6 curve points
+
+  WSRC vs KNN on Digits:
+    W = 5.0,  p = 0.2812  ns
+    Mean Δ (WSRC − KNN) = +0.0079
+    WSRC > KNN in 5/6 curve points
+
+  WSRC vs SRC on Digits:
+    W = 0.0,  p = 0.0312  *
+    Mean Δ (WSRC − SRC) = +0.0074
+    WSRC > SRC in 6/6 curve points
+
+  Summary: WSRC advantage on Digits is statistically significant vs ['SRC'].
+
+==============================================================
+Generating plots...
+
+  [1/4] p-value heatmap...
+    Saved: 1_pvalue_heatmap_wilcoxon.pdf
+  [2/4] Effect sizes with bootstrap CI...
+    Saved: 2_effect_sizes_pairwise.pdf
+  [3/4] Spearman scatter...
+    Saved: 3_spearman_zeror_vs_gap.pdf
+  [4/4] Digits learning curve with significance...
+    Saved: 4_digits_learning_curve_significance.pdf
+
+==============================================================
+STATISTICAL SUMMARY
+==============================================================
+
+  Friedman:  χ²=26.475, p=0.000008  ***
+
+  Significant pairs after Bonferroni (α=0.0083):
+    RF vs SRC            p=0.0001  Δ=+0.1604  ***
+    RF vs WSRC           p=0.0004  Δ=+0.1472  ***
+    RF vs KNN            p=0.0021  Δ=+0.0537  **
+    SRC vs KNN           p=0.0008  Δ=-0.1067  ***
+
+  Non-significant pairs:
+    SRC vs WSRC          p=0.5282  Δ=-0.0132  ns
+    WSRC vs KNN          p=0.0335  Δ=-0.0935  ns
+
+  Spearman ZeroR vs gap: ρ=0.377, p=0.1506  ns

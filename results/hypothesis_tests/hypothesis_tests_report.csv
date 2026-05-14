@@ -1,0 +1,13 @@
+test,statistic,p_value,significant,stars,note,comparison,p_bonf,mean_delta,wins_A
+Friedman,26.475,8e-06,True,***,"k=4 models, n=16 projects",,,,
+Wilcoxon,1.0,6.1e-05,True,***,"n=16 projects, Bonferroni α=0.0083",RF vs SRC,0.000366,0.1604,15.0
+Wilcoxon,6.0,0.000427,True,***,"n=16 projects, Bonferroni α=0.0083",RF vs WSRC,0.002563,0.1472,15.0
+Wilcoxon,12.0,0.002136,True,**,"n=16 projects, Bonferroni α=0.0083",RF vs KNN,0.012817,0.0537,13.0
+Wilcoxon,55.0,0.528168,False,ns,"n=16 projects, Bonferroni α=0.0083",SRC vs WSRC,1.0,-0.0132,5.0
+Wilcoxon,8.0,0.000763,True,***,"n=16 projects, Bonferroni α=0.0083",SRC vs KNN,0.004578,-0.1067,2.0
+Wilcoxon,27.0,0.033539,False,ns,"n=16 projects, Bonferroni α=0.0083",WSRC vs KNN,0.201233,-0.0935,4.0
+Spearman,0.3765,0.1506,False,ns,n=16 projects,ZeroR vs RF-WSRC gap,,,
+Spearman,-0.1059,0.6963,False,ns,"n=16 projects, reference comparison",ZeroR vs RF-KNN gap,,,
+Wilcoxon,5.0,0.625,False,ns,n=6 learning curve points,Digits: WSRC vs RF,,-0.0014,4.0
+Wilcoxon,5.0,0.2812,False,ns,n=6 learning curve points,Digits: WSRC vs KNN,,0.0079,5.0
+Wilcoxon,0.0,0.0312,True,*,n=6 learning curve points,Digits: WSRC vs SRC,,0.0074,6.0

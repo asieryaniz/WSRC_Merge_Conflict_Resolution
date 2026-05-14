@@ -1,0 +1,3 @@
+HYPOTHESIS TESTING REPORT
+n = 16 projects | α = 0.05 | Bonferroni α = 0.0083
+==============================================================
